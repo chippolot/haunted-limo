@@ -10,4 +10,5 @@
 - [x] Hook up domain name
 - [x] Index links to misunderstanding page
 - [x] Cron job to regen story every night
-- [ ] Calendar view to select old story
+- [ ] Cycling colors?
+- [ ] Show prompt?

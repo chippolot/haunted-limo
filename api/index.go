@@ -3,10 +3,12 @@ package api
 import (
 	"html/template"
 	"net/http"
+	"os"
 )
 
 func Index(w http.ResponseWriter, r *http.Request) {
-	tmplPath := "data/templates/index.html"
+	baseTmplDir := os.Getenv("BASE_TEMPLATE_DIR")
+	tmplPath := baseTmplDir + "data/templates/index.html"
 	tmpl := template.Must(template.ParseFiles(tmplPath))
 	tmpl.Execute(w, nil)
 }
