@@ -7,41 +7,47 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <title>haunted limo.</title>
     <style>
         body {
-            margin: 0;
-            padding: 0;
-            background-color: #363636;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            background-color: #212121;
+            font-family: "Inknut Antiqua", serif;
+            color: white;
         }
 
-        .inknut-antiqua-light {
-            font-family: "Inknut Antiqua", serif;
+        .hero {
             font-weight: 300;
             font-style: normal;
         }
 
-        .hero {
-            text-align: center;
-            font-size: 24px;
+        .hero h1 {
+            font-size: 2.5rem;
+        }
+
+        .hero ul {
+            font-size: 1.5rem;
+            color: #bbbbbb;
+        }
+
+        .hero a {
             color: white;
-            -webkit-user-select: none; /* Safari */
-            -ms-user-select: none; /* IE 10 and IE 11 */
-            user-select: none; /* Standard syntax */
+        }
+
+        .hero a:hover {
+            color: #aaa;
         }
     </style>
 </head>
 
-<body>
-
-    <div class="hero inknut-antiqua-light">
-        <h1>haunted limo.</h1>
+<body class="d-flex justify-content-center align-items-center vh-100">
+    <div class="hero inknut-antiqua-light text-center">
+        <h1 class="user-select-none">haunted limo.</h1>
+        <br/>
+        <ul class="list-unstyled">
+            <li><a href="/blunders" class="text-reset">blunders.</a></li>
+        </ul>
     </div>
-
 </body>
 
 </html>
