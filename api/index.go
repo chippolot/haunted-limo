@@ -7,7 +7,7 @@ import (
 )
 
 func Index(w http.ResponseWriter, r *http.Request) {
-	tmplPath, _ := filepath.Abs("api/data/templates/index.html")
+	tmplPath, _ := filepath.Abs("data/templates/index.html")
 	tmpl := template.Must(template.ParseFiles(tmplPath))
 	tmpl.Execute(w, nil)
 }

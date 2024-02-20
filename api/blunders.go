@@ -21,7 +21,7 @@ func Blunders(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	tmplPath, _ := filepath.Abs("api/data/templates/blunders.html")
+	tmplPath, _ := filepath.Abs("data/templates/blunders.html")
 	tmpl := template.Must(template.ParseFiles(tmplPath))
 	tmpl.Execute(w, result)
 }
