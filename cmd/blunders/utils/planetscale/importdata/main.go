@@ -86,7 +86,7 @@ func insertStringsFromFile(db *sql.DB, table string, column string, filePath str
 	}
 	defer file.Close()
 
-	sliceSize := 100
+	sliceSize := 200
 	var lines []string
 
 	scanner := bufio.NewScanner(file)
@@ -97,6 +97,7 @@ func insertStringsFromFile(db *sql.DB, table string, column string, filePath str
 			lines = []string{}
 		}
 	}
+	insertStrings(db, table, column, lines)
 
 	if err := scanner.Err(); err != nil {
 		return err
@@ -106,6 +107,10 @@ func insertStringsFromFile(db *sql.DB, table string, column string, filePath str
 }
 
 func insertStrings(db *sql.DB, table, column string, data []string) error {
+	if len(data) == 0 {
+		return nil
+	}
+
 	// Start a transaction
 	tx, err := db.Begin()
 	if err != nil {
