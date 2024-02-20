@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"os"
 
@@ -9,7 +10,11 @@ import (
 	"github.com/chippolot/haunted-limo/api/_pkg/blunders"
 )
 
-func Handler(w http.ResponseWriter, r *http.Request) {
+func indexHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Haunted Limo")
+}
+
+func blundersHandler(w http.ResponseWriter, r *http.Request) {
 	// Resolve API key
 	token := os.Getenv("OPEN_AI_API_KEY")
 	if token == "" {
@@ -36,4 +41,20 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func router(w http.ResponseWriter, r *http.Request) {
+	path := r.URL.Path
+	switch path {
+	case "/":
+		indexHandler(w, r)
+	case "/hello":
+		blundersHandler(w, r)
+	default:
+		http.NotFound(w, r)
+	}
+}
+
+func Handler(w http.ResponseWriter, r *http.Request) {
+	router(w, r)
 }
