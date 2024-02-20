@@ -26,8 +26,11 @@ func blundersHandler(w http.ResponseWriter, r *http.Request) {
 		panic("DSN not found in environment variables")
 	}
 
-	// Get most recent story
+	// Prep data provider
 	dataProvider := blunders.MakeSQLDataProvider(dsn)
+	defer dataProvider.Close()
+
+	// Get most recent story
 	result, err := dataProvider.GetMostRecentStory()
 	if err != nil {
 		panic(err)
