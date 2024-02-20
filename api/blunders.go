@@ -7,6 +7,7 @@ import (
 
 	common "github.com/chippolot/haunted-limo/api/_pkg"
 	blunders "github.com/chippolot/haunted-limo/api/_pkg/blunders"
+	"github.com/chippolot/jokegen"
 )
 
 func Blunders(w http.ResponseWriter, r *http.Request) {
@@ -16,7 +17,7 @@ func Blunders(w http.ResponseWriter, r *http.Request) {
 	defer dataProvider.Close()
 
 	// Get most recent story
-	result, err := dataProvider.GetMostRecentStory()
+	result, err := dataProvider.GetMostRecentStory(jokegen.Misunderstanding)
 	if err != nil {
 		panic(err)
 	}
