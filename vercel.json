@@ -1,8 +1,18 @@
 {
-    "routes": [
-        {
-          "src": "/.*",
-          "dest": "api/router.go"
-        }
-      ]
+  "routes": [
+    {
+      "src": "/",
+      "dest": "api/index.go"
+    },
+    {
+      "src": "/blunders",
+      "dest": "api/blunders/index.go"
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/blunders/cron.go",
+      "schedule": "0 0 * * *"
+    }
+  ]
 }
