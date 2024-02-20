@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/chippolot/blunder"
 	"github.com/chippolot/haunted-limo/api/_pkg/blunders"
 )
 
@@ -21,16 +20,15 @@ func blundersHandler(w http.ResponseWriter, r *http.Request) {
 		panic("OpenAI API key not found in environment variables")
 	}
 
+	// Resolve DB connection string
 	dsn := os.Getenv("DSN")
 	if dsn == "" {
 		panic("DSN not found in environment variables")
 	}
 
+	// Get most recent story
 	dataProvider := blunders.MakeSQLDataProvider(dsn)
-
-	// Generate Story
-	options := blunder.StoryOptions{}
-	result, err := blunder.GenerateStory(token, dataProvider, options)
+	result, err := dataProvider.GetMostRecentStory()
 	if err != nil {
 		panic(err)
 	}
