@@ -8,6 +8,6 @@
 - [x] Stylize misunderstandings page
     - [x] Works on mobile
 - [x] Hook up domain name
-- [ ] Index links to misunderstanding page
+- [x] Index links to misunderstanding page
 - [x] Cron job to regen story every night
 - [ ] Calendar view to select old story
