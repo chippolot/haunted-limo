@@ -3,6 +3,7 @@ package api
 import (
 	"html/template"
 	"net/http"
+	"path/filepath"
 
 	common "github.com/chippolot/haunted-limo/api/_pkg"
 	blunders "github.com/chippolot/haunted-limo/api/_pkg/blunders"
@@ -20,6 +21,7 @@ func Blunders(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	tmpl := template.Must(template.ParseFiles("api/data/templates/blunders.html"))
+	tmplPath, _ := filepath.Abs("api/data/templates/blunders.html")
+	tmpl := template.Must(template.ParseFiles(tmplPath))
 	tmpl.Execute(w, result)
 }
