@@ -9,7 +9,7 @@ import (
 	"github.com/chippolot/haunted-limo/internal/blunders"
 )
 
-func Json(w http.ResponseWriter, r *http.Request) {
+func Handler(w http.ResponseWriter, r *http.Request) {
 	// Resolve API key
 	token := os.Getenv("OPEN_AI_API_KEY")
 	if token == "" {
