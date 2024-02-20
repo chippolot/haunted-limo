@@ -4,7 +4,8 @@ import (
 	"html/template"
 	"net/http"
 
-	blunders "github.com/chippolot/haunted-limo/api/blunders/_internal"
+	api "github.com/chippolot/haunted-limo/api/_pkg"
+	blunders "github.com/chippolot/haunted-limo/api/blunders/_pkg"
 )
 
 func Blunders(w http.ResponseWriter, r *http.Request) {
@@ -19,6 +20,7 @@ func Blunders(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	tmpl := template.Must(template.ParseFiles("templates/blunders.html"))
+	tmplPath := api.GetTemplatePath("blunders.html")
+	tmpl := template.Must(template.ParseFiles(tmplPath))
 	tmpl.Execute(w, result)
 }

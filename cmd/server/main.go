@@ -7,7 +7,7 @@ import (
 
 	"github.com/chippolot/haunted-limo/api"
 	blundersAPI "github.com/chippolot/haunted-limo/api/blunders"
-	blunders "github.com/chippolot/haunted-limo/api/blunders/_internal"
+	blunders "github.com/chippolot/haunted-limo/api/blunders/_pkg"
 )
 
 var dataProvider *blunders.SQLDataProvider

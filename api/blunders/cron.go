@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/chippolot/blunder"
-	blunders "github.com/chippolot/haunted-limo/api/blunders/_internal"
+	blunders "github.com/chippolot/haunted-limo/api/blunders/_pkg"
 )
 
 func Cron(w http.ResponseWriter, r *http.Request) {
