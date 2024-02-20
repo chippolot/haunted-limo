@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/chippolot/blunder"
+	"github.com/chippolot/jokegen"
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -28,7 +28,7 @@ func MakeSQLDataProvider(connectionString string) *SQLDataProvider {
 	return dataProvider
 }
 
-func (f *SQLDataProvider) AddStory(story string, prompt string) error {
+func (f *SQLDataProvider) AddStory(story, prompt string, storyType jokegen.StoryType) error {
 	now := time.Now().UTC()
 
 	sqlInsert := `INSERT INTO Stories (Story, Prompt, Timestamp) VALUES (?, ?, ?)`
@@ -40,20 +40,20 @@ func (f *SQLDataProvider) AddStory(story string, prompt string) error {
 	return nil
 }
 
-func (f *SQLDataProvider) GetMostRecentStory() (blunder.StoryResult, error) {
-	var result blunder.StoryResult
+func (f *SQLDataProvider) GetMostRecentStory(storyType jokegen.StoryType) (jokegen.StoryResult, error) {
+	var result jokegen.StoryResult
 
 	err := f.db.
 		QueryRow("SELECT Story, Prompt, Timestamp FROM Stories ORDER BY Id DESC LIMIT 1").
 		Scan(&result.Story, &result.Prompt, &result.Timestamp)
 	if err != nil && err != sql.ErrNoRows {
-		return blunder.StoryResult{}, err
+		return jokegen.StoryResult{}, err
 	}
 
 	return result, nil
 }
 
-func (f *SQLDataProvider) GetRandomString(dataType blunder.StoryDataType) (string, error) {
+func (f *SQLDataProvider) GetRandomString(dataType jokegen.StoryDataType) (string, error) {
 	table, column, err := getTableAndColumnName(dataType)
 	if err != nil {
 		return "", err
@@ -76,13 +76,13 @@ func (f *SQLDataProvider) Close() error {
 	return f.db.Close()
 }
 
-func getTableAndColumnName(dataType blunder.StoryDataType) (string, string, error) {
+func getTableAndColumnName(dataType jokegen.StoryDataType) (string, string, error) {
 	switch dataType {
-	case blunder.Themes:
+	case jokegen.Themes:
 		return "Themes", "Theme", nil
-	case blunder.Styles:
+	case jokegen.Styles:
 		return "Styles", "Style", nil
-	case blunder.Modifiers:
+	case jokegen.Modifiers:
 		return "Modifiers", "Modifier", nil
 	}
 	return "", "", fmt.Errorf("unknown data type %v", dataType)

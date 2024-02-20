@@ -3,9 +3,9 @@ package api
 import (
 	"net/http"
 
-	"github.com/chippolot/blunder"
 	common "github.com/chippolot/haunted-limo/api/_pkg"
 	blunders "github.com/chippolot/haunted-limo/api/_pkg/blunders"
+	"github.com/chippolot/jokegen"
 )
 
 func Cron(w http.ResponseWriter, r *http.Request) {
@@ -16,7 +16,8 @@ func Cron(w http.ResponseWriter, r *http.Request) {
 
 	// Get most recent story
 	openAIToken := common.GetOpenAIToken()
-	_, err := blunder.GenerateStory(openAIToken, dataProvider, blunder.StoryOptions{ForceRegenerate: true})
+	options := jokegen.StoryOptions{ForceRegenerate: true}
+	_, err := jokegen.GenerateStory(openAIToken, jokegen.Misunderstanding, dataProvider, options)
 	if err != nil {
 		panic(err)
 	}
