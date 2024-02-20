@@ -1,57 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>haunted limo. blunders.</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&family=Montserrat:wght@300&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&family=Montserrat:wght@300&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+        integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
+        body,
+        html {
             background-color: #154137;
             color: white;
             font-family: 'Montserrat', sans-serif;
-            font-weight: 300;
             overflow: hidden;
         }
+
         .hero {
-            width: 100%;
-            padding: 20px;
-            text-align: center;
             font-family: 'Fredoka', sans-serif;
             font-size: 48px;
-            font-weight: 600;
         }
+
         .message-container {
-            width: 75%;
-            padding: 20px;
-            text-align: center;
             word-wrap: break-word;
             font-size: clamp(14px, 4.5vw, 24px);
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            flex-grow: 1;
             line-height: 1.5;
         }
     </style>
 </head>
-<body>
 
-<div class="hero">blunders.</div>
-
-<div class="message-container">
-    {{.Story}}
-</div>
-
+<body class="d-flex flex-column align-items-center justify-content-start min-vh-100">
+    <div class="hero w-100 text-center p-3">blunders.</div>
+    <div class="message-container d-flex align-items-center justify-content-center w-75" style="flex-grow: 1;">
+        {{.Story}}
+    </div>
 </body>
+
 </html>
