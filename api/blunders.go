@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/chippolot/blunder"
-	"github.com/chippolot/haunted-limo/internal/blunders"
+	"github.com/chippolot/haunted-limo/api/_pkg/blunders"
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
