@@ -1,7 +1,7 @@
 package api
 
 import (
-	"encoding/json"
+	"html/template"
 	"net/http"
 
 	"github.com/chippolot/haunted-limo/api/_pkg/blunders"
@@ -19,10 +19,6 @@ func Blunders(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	// Write JSON response
-	w.Header().Set("Content-Type", "application/json")
-	err = json.NewEncoder(w).Encode(result)
-	if err != nil {
-		panic(err)
-	}
+	tmpl := template.Must(template.ParseFiles("templates/blunders.html"))
+	tmpl.Execute(w, result)
 }
