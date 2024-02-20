@@ -4,17 +4,17 @@ import (
 	"net/http"
 
 	"github.com/chippolot/blunder"
-	"github.com/chippolot/haunted-limo/api/_pkg/blunders"
+	blunders "github.com/chippolot/haunted-limo/api/blunders/_internal"
 )
 
 func Cron(w http.ResponseWriter, r *http.Request) {
 	// Prep data provider
-	connectionString := getMySQLConnectionString()
+	connectionString := blunders.GetMySQLConnectionString()
 	dataProvider := blunders.MakeSQLDataProvider(connectionString)
 	defer dataProvider.Close()
 
 	// Get most recent story
-	openAIToken := getOpenAIToken()
+	openAIToken := blunders.GetOpenAIToken()
 	_, err := blunder.GenerateStory(openAIToken, dataProvider, blunder.StoryOptions{ForceRegenerate: true})
 	if err != nil {
 		panic(err)

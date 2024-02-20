@@ -1,8 +1,8 @@
-package api
+package blunders
 
 import "os"
 
-func getMySQLConnectionString() string {
+func GetMySQLConnectionString() string {
 	// Resolve DB connection string
 	connectionString := os.Getenv("DSN")
 	if connectionString == "" {
@@ -11,7 +11,7 @@ func getMySQLConnectionString() string {
 	return connectionString
 }
 
-func getOpenAIToken() string {
+func GetOpenAIToken() string {
 	// Resolve API key
 	token := os.Getenv("OPEN_AI_API_KEY")
 	if token == "" {

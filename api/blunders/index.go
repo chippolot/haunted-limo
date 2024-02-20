@@ -4,12 +4,12 @@ import (
 	"html/template"
 	"net/http"
 
-	"github.com/chippolot/haunted-limo/api/_pkg/blunders"
+	blunders "github.com/chippolot/haunted-limo/api/blunders/_internal"
 )
 
 func Blunders(w http.ResponseWriter, r *http.Request) {
 	// Prep data provider
-	connectionString := getMySQLConnectionString()
+	connectionString := blunders.GetMySQLConnectionString()
 	dataProvider := blunders.MakeSQLDataProvider(connectionString)
 	defer dataProvider.Close()
 
