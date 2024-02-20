@@ -1,8 +1,8 @@
 {
-    "routes": [
+    "redirects": [
         {
-            "src": "/(.*)",
-            "dest": "/api"
+            "source": "/(.*)",
+            "destination": "/api"
         }
     ]
 }
