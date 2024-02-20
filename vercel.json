@@ -11,7 +11,7 @@
   ],
   "functions": {
     "api/*.go": {
-      "includeFiles": "../data/*"
+      "includeFiles": "data/templates/*.html"
     }
   },
   "crons": [
