@@ -6,8 +6,7 @@ import (
 	"os"
 
 	"github.com/chippolot/haunted-limo/api"
-	blundersAPI "github.com/chippolot/haunted-limo/api/blunders"
-	blunders "github.com/chippolot/haunted-limo/api/blunders/_pkg"
+	blunders "github.com/chippolot/haunted-limo/api/_pkg/blunders"
 )
 
 var dataProvider *blunders.SQLDataProvider
@@ -23,8 +22,8 @@ func main() {
 	defer dataProvider.Close()
 
 	http.Handle("/", http.HandlerFunc(api.Index))
-	http.Handle("/blunders", http.HandlerFunc(blundersAPI.Blunders))
-	http.Handle("/blunders/api/cron", http.HandlerFunc(blundersAPI.Cron))
+	http.Handle("/blunders", http.HandlerFunc(api.Blunders))
+	http.Handle("/blunders/api/cron", http.HandlerFunc(api.Cron))
 
 	port := 8080
 	fmt.Printf("Server is running on http://localhost:%v\n", port)

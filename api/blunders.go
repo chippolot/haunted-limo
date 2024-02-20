@@ -4,13 +4,13 @@ import (
 	"html/template"
 	"net/http"
 
-	api "github.com/chippolot/haunted-limo/api/_pkg"
-	blunders "github.com/chippolot/haunted-limo/api/blunders/_pkg"
+	common "github.com/chippolot/haunted-limo/api/_pkg"
+	blunders "github.com/chippolot/haunted-limo/api/_pkg/blunders"
 )
 
 func Blunders(w http.ResponseWriter, r *http.Request) {
 	// Prep data provider
-	connectionString := blunders.GetMySQLConnectionString()
+	connectionString := common.GetMySQLConnectionString()
 	dataProvider := blunders.MakeSQLDataProvider(connectionString)
 	defer dataProvider.Close()
 
@@ -20,7 +20,6 @@ func Blunders(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	tmplPath := api.GetTemplatePath("blunders.html")
-	tmpl := template.Must(template.ParseFiles(tmplPath))
+	tmpl := template.Must(template.ParseFiles("api/data/templates/blunders.html"))
 	tmpl.Execute(w, result)
 }

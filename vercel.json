@@ -6,12 +6,17 @@
     },
     {
       "src": "/blunders",
-      "dest": "api/blunders/index.go"
+      "dest": "api/blunders.go"
     }
   ],
+  "functions": {
+    "api/*.go": {
+      "includeFiles": "data/*"
+    }
+  },
   "crons": [
     {
-      "path": "/api/blunders/cron.go",
+      "path": "/api/blunders_cron.go",
       "schedule": "0 0 * * *"
     }
   ]

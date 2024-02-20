@@ -1,14 +1,23 @@
-package api
+package common
 
 import (
 	"os"
-	"path"
 )
 
-func GetTemplatePath(filename string) string {
-	cwd, err := os.Getwd()
-	if err != nil {
-		panic(err)
+func GetMySQLConnectionString() string {
+	// Resolve DB connection string
+	connectionString := os.Getenv("DSN")
+	if connectionString == "" {
+		panic("DSN not found in environment variables")
 	}
-	return path.Join(cwd, "templates", filename)
+	return connectionString
+}
+
+func GetOpenAIToken() string {
+	// Resolve API key
+	token := os.Getenv("OPEN_AI_API_KEY")
+	if token == "" {
+		panic("OpenAI API key not found in environment variables")
+	}
+	return token
 }
