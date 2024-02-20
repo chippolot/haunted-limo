@@ -16,7 +16,7 @@ type SQLDataProvider struct {
 func MakeSQLDataProvider(connectionString string) *SQLDataProvider {
 	var err error
 
-	db, err := sql.Open("sqlite3", connectionString)
+	db, err := sql.Open("mysql", connectionString)
 	if err != nil {
 		panic(err)
 	}
@@ -59,7 +59,7 @@ func (f *SQLDataProvider) GetRandomString(dataType blunder.StoryDataType) (strin
 		return "", err
 	}
 
-	query := fmt.Sprintf("SELECT %s FROM %s ORDER BY RANDOM() LIMIT 1;", column, table)
+	query := fmt.Sprintf("SELECT %s FROM %s ORDER BY RAND() LIMIT 1;", column, table)
 
 	var str string
 
@@ -74,53 +74,6 @@ func (f *SQLDataProvider) GetRandomString(dataType blunder.StoryDataType) (strin
 
 func (f *SQLDataProvider) Close() error {
 	return f.db.Close()
-}
-
-func createTables(db *sql.DB) error {
-	var err error
-
-	createTableSQL := `CREATE TABLE IF NOT EXISTS Stories (
-		"Id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,		
-		"Story" TEXT,
-		"Prompt" TEXT,
-		"Timestamp" DATETIME
-	);`
-	_, err = db.Exec(createTableSQL)
-	if err != nil {
-		return err
-	}
-
-	createTableSQL = `CREATE TABLE IF NOT EXISTS Themes (
-		"Id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,		
-		"Theme" TEXT,
-		"Timestamp" DATETIME
-	);`
-	_, err = db.Exec(createTableSQL)
-	if err != nil {
-		return err
-	}
-
-	createTableSQL = `CREATE TABLE IF NOT EXISTS Styles (
-		"Id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,		
-		"Style" TEXT,
-		"Timestamp" DATETIME
-	);`
-	_, err = db.Exec(createTableSQL)
-	if err != nil {
-		return err
-	}
-
-	createTableSQL = `CREATE TABLE IF NOT EXISTS Modifiers (
-		"Id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,		
-		"Modifier" TEXT,
-		"Timestamp" DATETIME
-	);`
-	_, err = db.Exec(createTableSQL)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
 
 func getTableAndColumnName(dataType blunder.StoryDataType) (string, string, error) {
