@@ -48,7 +48,7 @@ func router(w http.ResponseWriter, r *http.Request) {
 	switch path {
 	case "/":
 		indexHandler(w, r)
-	case "/hello":
+	case "/blunders":
 		blundersHandler(w, r)
 	default:
 		http.NotFound(w, r)
