@@ -31,8 +31,8 @@ func MakeSQLDataProvider(connectionString string) *SQLDataProvider {
 func (f *SQLDataProvider) AddStory(story, prompt string, storyType jokegen.StoryType) error {
 	now := time.Now().UTC()
 
-	sqlInsert := `INSERT INTO Stories (Story, Prompt, Timestamp) VALUES (?, ?, ?)`
-	_, err := f.db.Exec(sqlInsert, story, prompt, now)
+	sqlInsert := `INSERT INTO Stories (Story, StoryType, Prompt, Timestamp) VALUES (?, ?, ?, ?)`
+	_, err := f.db.Exec(sqlInsert, story, storyType, prompt, now)
 	if err != nil {
 		return err
 	}
