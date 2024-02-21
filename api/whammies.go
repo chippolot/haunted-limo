@@ -21,8 +21,15 @@ func Whammies(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
+	model := common.StoryModel{
+		Story:              result.Story,
+		BackgroundColor:    "#bb3a51",
+		LogoFontLink:       "Courgette",
+		LogoFontFamilyName: "Courgette",
+	}
+
 	baseTmplDir := os.Getenv("BASE_TEMPLATE_DIR")
-	tmplPath := baseTmplDir + "data/templates/blunders.html"
+	tmplPath := baseTmplDir + "data/templates/story.gohtml"
 	tmpl := template.Must(template.ParseFiles(tmplPath))
-	tmpl.Execute(w, result)
+	tmpl.Execute(w, model)
 }

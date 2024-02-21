@@ -4,6 +4,13 @@ import (
 	"os"
 )
 
+type StoryModel struct {
+	Story              string
+	BackgroundColor    string
+	LogoFontLink       string
+	LogoFontFamilyName string
+}
+
 func GetMySQLConnectionString() string {
 	// Resolve DB connection string
 	connectionString := os.Getenv("DSN")
