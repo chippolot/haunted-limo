@@ -42,7 +42,7 @@ func main() {
 			},
 			&cli.StringFlag{
 				Name:     "storyType",
-				Aliases:  []string{"t"},
+				Aliases:  []string{"st"},
 				Value:    "",
 				Usage:    "Path to modifier strings",
 				Required: false,
@@ -81,16 +81,19 @@ func prepareDb(storyType jokegen.StoryType, themesPath, stylesPath, modifiersPat
 	defer db.Close()
 
 	if themesPath != "" {
+		fmt.Println("Uploading themes...")
 		if err := insertStringsFromFile(db, -1, "Themes", "Theme", themesPath); err != nil {
 			return err
 		}
 	}
 	if stylesPath != "" {
+		fmt.Println("Uploading styles...")
 		if err := insertStringsFromFile(db, storyType, "Styles", "Style", stylesPath); err != nil {
 			return err
 		}
 	}
 	if modifiersPath != "" {
+		fmt.Println("Uploading modifiers...")
 		if err := insertStringsFromFile(db, storyType, "Modifiers", "Modifier", modifiersPath); err != nil {
 			return err
 		}
@@ -112,13 +115,17 @@ func insertStringsFromFile(db *sql.DB, storyType jokegen.StoryType, table, colum
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
+		line := scanner.Text()
+		lines = append(lines, line)
 		if len(lines) == sliceSize {
 			insertStrings(db, storyType, table, column, lines)
 			lines = []string{}
 		}
 	}
-	insertStrings(db, storyType, table, column, lines)
+	err = insertStrings(db, storyType, table, column, lines)
+	if err != nil {
+		return err
+	}
 
 	if err := scanner.Err(); err != nil {
 		return err
@@ -141,7 +148,7 @@ func insertStrings(db *sql.DB, storyType jokegen.StoryType, table, column string
 
 	// Prepare the statement for inserting data, including a timestamp
 	maybeStoryTypeColumn, maybeStoryTypeArg := "", ""
-	if storyType == -1 {
+	if storyType != -1 {
 		maybeStoryTypeColumn = ", StoryType"
 		maybeStoryTypeArg = ", ?"
 	}
@@ -156,7 +163,13 @@ func insertStrings(db *sql.DB, storyType jokegen.StoryType, table, column string
 		line := entry
 		timestamp := time.Now().UTC()
 
-		_, err := stmt.Exec(line, timestamp)
+		values := make([]any, 0)
+		values = append(values, line)
+		values = append(values, timestamp)
+		if storyType != -1 {
+			values = append(values, storyType)
+		}
+		_, err := stmt.Exec(values...)
 		if err != nil {
 			return err
 		}
