@@ -24,7 +24,7 @@ func main() {
 	http.Handle("/", http.HandlerFunc(api.Index))
 	http.Handle("/blunders", http.HandlerFunc(api.Blunders))
 	http.Handle("/whammies", http.HandlerFunc(api.Whammies))
-	http.Handle("/cron", http.HandlerFunc(api.Cron))
+	http.Handle("/api/cron", http.HandlerFunc(api.Cron))
 
 	port := 8080
 	fmt.Printf("Server is running on http://localhost:%v\n", port)
