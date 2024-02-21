@@ -9,27 +9,27 @@ import (
 	"github.com/chippolot/jokegen"
 )
 
-func Whammies(w http.ResponseWriter, r *http.Request) {
+func Hexes(w http.ResponseWriter, r *http.Request) {
 	// Prep data provider
 	connectionString := common.GetMySQLConnectionString()
 	dataProvider := common.MakeSQLDataProvider(connectionString)
 	defer dataProvider.Close()
 
 	// Get most recent story
-	result, err := dataProvider.GetMostRecentStory(jokegen.Slapstick)
+	result, err := dataProvider.GetMostRecentStory(jokegen.Hex)
 	if err != nil {
 		panic(err)
 	}
 
 	model := common.StoryModel{
-		Title:              "whammies.",
+		Title:              "hexes.",
 		Story:              result.Story,
-		BackgroundColor:    "#bb3a51",
-		LogoFontLink:       "Courgette",
-		LogoFontFamilyName: "Courgette",
+		BackgroundColor:    "#372445",
+		LogoFontLink:       template.URL("Vesper+Libre:wght@400"),
+		LogoFontFamilyName: "Vesper Libre",
 		LogoFontStyle:      "normal",
-		LogoFontWeight:     300,
-		LogoFontSerif:      "sans-serif",
+		LogoFontWeight:     400,
+		LogoFontSerif:      "serif",
 	}
 
 	baseTmplDir := os.Getenv("BASE_TEMPLATE_DIR")

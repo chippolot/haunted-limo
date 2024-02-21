@@ -1,6 +1,7 @@
 package common
 
 import (
+	"html/template"
 	"os"
 )
 
@@ -8,8 +9,11 @@ type StoryModel struct {
 	Title              string
 	Story              string
 	BackgroundColor    string
-	LogoFontLink       string
+	LogoFontLink       template.URL
 	LogoFontFamilyName string
+	LogoFontStyle      string
+	LogoFontWeight     int
+	LogoFontSerif      string
 }
 
 func GetMySQLConnectionString() string {

@@ -11,6 +11,10 @@
     {
       "src": "/whammies",
       "dest": "api/whammies.go"
+    },
+    {
+      "src": "/hexes",
+      "dest": "api/hexes.go"
     }
   ],
   "functions": {

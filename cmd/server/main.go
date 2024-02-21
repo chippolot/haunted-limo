@@ -24,6 +24,7 @@ func main() {
 	http.Handle("/", http.HandlerFunc(api.Index))
 	http.Handle("/blunders", http.HandlerFunc(api.Blunders))
 	http.Handle("/whammies", http.HandlerFunc(api.Whammies))
+	http.Handle("/hexes", http.HandlerFunc(api.Hexes))
 	http.Handle("/api/cron", http.HandlerFunc(api.Cron))
 
 	port := 8080

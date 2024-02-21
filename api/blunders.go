@@ -27,6 +27,9 @@ func Blunders(w http.ResponseWriter, r *http.Request) {
 		BackgroundColor:    "#154137",
 		LogoFontLink:       "Fredoka:wght@600",
 		LogoFontFamilyName: "Fredoka",
+		LogoFontStyle:      "normal",
+		LogoFontWeight:     600,
+		LogoFontSerif:      "sans-serif",
 	}
 
 	baseTmplDir := os.Getenv("BASE_TEMPLATE_DIR")
