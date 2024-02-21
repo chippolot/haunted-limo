@@ -22,6 +22,7 @@ func Blunders(w http.ResponseWriter, r *http.Request) {
 	}
 
 	model := common.StoryModel{
+		Title:              "blunders.",
 		Story:              result.Story,
 		BackgroundColor:    "#154137",
 		LogoFontLink:       "Fredoka:wght@600",

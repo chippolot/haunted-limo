@@ -5,6 +5,7 @@ import (
 )
 
 type StoryModel struct {
+	Title              string
 	Story              string
 	BackgroundColor    string
 	LogoFontLink       string

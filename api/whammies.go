@@ -22,6 +22,7 @@ func Whammies(w http.ResponseWriter, r *http.Request) {
 	}
 
 	model := common.StoryModel{
+		Title:              "whammies.",
 		Story:              result.Story,
 		BackgroundColor:    "#bb3a51",
 		LogoFontLink:       "Courgette",
