@@ -7,6 +7,10 @@
     {
       "src": "/blunders",
       "dest": "api/blunders.go"
+    },
+    {
+      "src": "/whammies",
+      "dest": "api/whammies.go"
     }
   ],
   "functions": {
@@ -16,7 +20,7 @@
   },
   "crons": [
     {
-      "path": "/api/blunders_cron.go",
+      "path": "/api/cron.go",
       "schedule": "0 0 * * *"
     }
   ]

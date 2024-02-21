@@ -6,10 +6,10 @@ import (
 	"os"
 
 	"github.com/chippolot/haunted-limo/api"
-	blunders "github.com/chippolot/haunted-limo/api/_pkg/blunders"
+	common "github.com/chippolot/haunted-limo/api/_pkg"
 )
 
-var dataProvider *blunders.SQLDataProvider
+var dataProvider *common.SQLDataProvider
 
 func main() {
 	// Resolve DB connection string
@@ -18,12 +18,13 @@ func main() {
 		panic("DSN not found in environment variables")
 	}
 
-	dataProvider = blunders.MakeSQLDataProvider(dsn)
+	dataProvider = common.MakeSQLDataProvider(dsn)
 	defer dataProvider.Close()
 
 	http.Handle("/", http.HandlerFunc(api.Index))
 	http.Handle("/blunders", http.HandlerFunc(api.Blunders))
-	http.Handle("/blunders/api/cron", http.HandlerFunc(api.Cron))
+	http.Handle("/whammies", http.HandlerFunc(api.Whammies))
+	http.Handle("/cron", http.HandlerFunc(api.Cron))
 
 	port := 8080
 	fmt.Printf("Server is running on http://localhost:%v\n", port)

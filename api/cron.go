@@ -4,14 +4,13 @@ import (
 	"net/http"
 
 	common "github.com/chippolot/haunted-limo/api/_pkg"
-	blunders "github.com/chippolot/haunted-limo/api/_pkg/blunders"
 	"github.com/chippolot/jokegen"
 )
 
 func Cron(w http.ResponseWriter, r *http.Request) {
 	// Prep data provider
 	connectionString := common.GetMySQLConnectionString()
-	dataProvider := blunders.MakeSQLDataProvider(connectionString)
+	dataProvider := common.MakeSQLDataProvider(connectionString)
 	defer dataProvider.Close()
 
 	// Get most recent story

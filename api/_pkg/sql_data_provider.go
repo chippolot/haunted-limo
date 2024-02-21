@@ -1,4 +1,4 @@
-package blunders
+package common
 
 import (
 	"database/sql"
