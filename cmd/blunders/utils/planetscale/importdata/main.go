@@ -8,6 +8,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/chippolot/jokegen"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/urfave/cli/v2"
 )
@@ -23,28 +24,42 @@ func main() {
 				Aliases:  []string{"t"},
 				Value:    "",
 				Usage:    "Path to theme strings",
-				Required: true,
+				Required: false,
 			},
 			&cli.StringFlag{
 				Name:     "stylesPath",
 				Aliases:  []string{"s"},
 				Value:    "",
 				Usage:    "Path to style strings",
-				Required: true,
+				Required: false,
 			},
 			&cli.StringFlag{
 				Name:     "modifiersPath",
 				Aliases:  []string{"m"},
 				Value:    "",
 				Usage:    "Path to modifier strings",
-				Required: true,
+				Required: false,
+			},
+			&cli.StringFlag{
+				Name:     "storyType",
+				Aliases:  []string{"t"},
+				Value:    "",
+				Usage:    "Path to modifier strings",
+				Required: false,
 			},
 		},
 		Action: func(ctx *cli.Context) error {
+			storyTypeString := ctx.String("storyType")
+			storyType, err := jokegen.ParseStoryType(storyTypeString)
+			if err != nil {
+				return err
+			}
+
 			themesPath := ctx.String("themesPath")
 			stylesPath := ctx.String("stylesPath")
 			modifiersPath := ctx.String("modifiersPath")
-			return prepareDb(themesPath, stylesPath, modifiersPath)
+
+			return prepareDb(storyType, themesPath, stylesPath, modifiersPath)
 		},
 	}
 
@@ -53,7 +68,7 @@ func main() {
 	}
 }
 
-func prepareDb(themesPath, stylesPath, modifiersPath string) error {
+func prepareDb(storyType jokegen.StoryType, themesPath, stylesPath, modifiersPath string) error {
 	dsn := os.Getenv("DSN")
 	if dsn == "" {
 		log.Fatal("DSN not found in environment variables")
@@ -65,22 +80,28 @@ func prepareDb(themesPath, stylesPath, modifiersPath string) error {
 	}
 	defer db.Close()
 
-	if err := insertStringsFromFile(db, "Themes", "Theme", themesPath); err != nil {
-		return err
+	if themesPath != "" {
+		if err := insertStringsFromFile(db, -1, "Themes", "Theme", themesPath); err != nil {
+			return err
+		}
 	}
-	if err := insertStringsFromFile(db, "Styles", "Style", stylesPath); err != nil {
-		return err
+	if stylesPath != "" {
+		if err := insertStringsFromFile(db, storyType, "Styles", "Style", stylesPath); err != nil {
+			return err
+		}
 	}
-	if err := insertStringsFromFile(db, "Modifiers", "Modifier", modifiersPath); err != nil {
-		return err
+	if modifiersPath != "" {
+		if err := insertStringsFromFile(db, storyType, "Modifiers", "Modifier", modifiersPath); err != nil {
+			return err
+		}
 	}
 
 	fmt.Println("Finished preparing database.")
 	return nil
 }
 
-func insertStringsFromFile(db *sql.DB, table string, column string, filePath string) error {
-	file, err := os.Open(filePath)
+func insertStringsFromFile(db *sql.DB, storyType jokegen.StoryType, table, column, filePath string) error {
+	file, err := jokegen.ResourcesFS.Open(filePath)
 	if err != nil {
 		return err
 	}
@@ -93,11 +114,11 @@ func insertStringsFromFile(db *sql.DB, table string, column string, filePath str
 	for scanner.Scan() {
 		lines = append(lines, scanner.Text())
 		if len(lines) == sliceSize {
-			insertStrings(db, table, column, lines)
+			insertStrings(db, storyType, table, column, lines)
 			lines = []string{}
 		}
 	}
-	insertStrings(db, table, column, lines)
+	insertStrings(db, storyType, table, column, lines)
 
 	if err := scanner.Err(); err != nil {
 		return err
@@ -106,7 +127,7 @@ func insertStringsFromFile(db *sql.DB, table string, column string, filePath str
 	return nil
 }
 
-func insertStrings(db *sql.DB, table, column string, data []string) error {
+func insertStrings(db *sql.DB, storyType jokegen.StoryType, table, column string, data []string) error {
 	if len(data) == 0 {
 		return nil
 	}
@@ -119,7 +140,12 @@ func insertStrings(db *sql.DB, table, column string, data []string) error {
 	defer tx.Rollback() // The rollback will be ignored if the transaction has been committed
 
 	// Prepare the statement for inserting data, including a timestamp
-	stmt, err := tx.Prepare(fmt.Sprintf("INSERT INTO %s (%s, Timestamp) VALUES (?, ?)", table, column))
+	maybeStoryTypeColumn, maybeStoryTypeArg := "", ""
+	if storyType == -1 {
+		maybeStoryTypeColumn = ", StoryType"
+		maybeStoryTypeArg = ", ?"
+	}
+	stmt, err := tx.Prepare(fmt.Sprintf("INSERT INTO %s (%s, Timestamp%s) VALUES (?, ?%s)", table, column, maybeStoryTypeColumn, maybeStoryTypeArg))
 	if err != nil {
 		return err
 	}

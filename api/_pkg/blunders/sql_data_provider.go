@@ -44,7 +44,7 @@ func (f *SQLDataProvider) GetMostRecentStory(storyType jokegen.StoryType) (jokeg
 	var result jokegen.StoryResult
 
 	err := f.db.
-		QueryRow("SELECT Story, Prompt, Timestamp FROM Stories ORDER BY Id DESC LIMIT 1").
+		QueryRow(fmt.Sprintf("SELECT Story, Prompt, Timestamp FROM Stories WHERE StoryType = %d ORDER BY Id DESC LIMIT 1", storyType)).
 		Scan(&result.Story, &result.Prompt, &result.Timestamp)
 	if err != nil && err != sql.ErrNoRows {
 		return jokegen.StoryResult{}, err
@@ -53,13 +53,17 @@ func (f *SQLDataProvider) GetMostRecentStory(storyType jokegen.StoryType) (jokeg
 	return result, nil
 }
 
-func (f *SQLDataProvider) GetRandomString(dataType jokegen.StoryDataType) (string, error) {
-	table, column, err := getTableAndColumnName(dataType)
+func (f *SQLDataProvider) GetRandomString(dataType jokegen.StoryDataType, storyType jokegen.StoryType) (string, error) {
+	table, column, hasStoryTypeFilter, err := getTableAndColumnName(dataType)
 	if err != nil {
 		return "", err
 	}
 
-	query := fmt.Sprintf("SELECT %s FROM %s ORDER BY RAND() LIMIT 1;", column, table)
+	where := ""
+	if hasStoryTypeFilter {
+		where = fmt.Sprintf("WHERE StoryType = %d", storyType)
+	}
+	query := fmt.Sprintf("SELECT %s FROM %s %s ORDER BY RAND() LIMIT 1;", column, table, where)
 
 	var str string
 
@@ -76,14 +80,14 @@ func (f *SQLDataProvider) Close() error {
 	return f.db.Close()
 }
 
-func getTableAndColumnName(dataType jokegen.StoryDataType) (string, string, error) {
+func getTableAndColumnName(dataType jokegen.StoryDataType) (string, string, bool, error) {
 	switch dataType {
 	case jokegen.Themes:
-		return "Themes", "Theme", nil
+		return "Themes", "Theme", false, nil
 	case jokegen.Styles:
-		return "Styles", "Style", nil
+		return "Styles", "Style", true, nil
 	case jokegen.Modifiers:
-		return "Modifiers", "Modifier", nil
+		return "Modifiers", "Modifier", true, nil
 	}
-	return "", "", fmt.Errorf("unknown data type %v", dataType)
+	return "", "", false, fmt.Errorf("unknown data type %v", dataType)
 }
