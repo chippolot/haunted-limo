@@ -61,7 +61,7 @@ func (f *SQLDataProvider) GetRandomString(dataType jokegen.StoryDataType, storyT
 
 	where := ""
 	if hasStoryTypeFilter {
-		where = fmt.Sprintf("WHERE StoryType = %d", storyType)
+		where = fmt.Sprintf("WHERE StoryType & %d != 0", storyType)
 	}
 	query := fmt.Sprintf("SELECT %s FROM %s %s ORDER BY RAND() LIMIT 1;", column, table, where)
 
