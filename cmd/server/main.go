@@ -11,6 +11,11 @@ import (
 
 var dataProvider *common.SQLDataProvider
 
+func cronWithAuthorization(w http.ResponseWriter, r *http.Request) {
+	r.Header.Add("Authorization", fmt.Sprintf("Bearer %s", os.Getenv("CRON_SECRET")))
+	api.Cron(w, r)
+}
+
 func main() {
 	// Resolve DB connection string
 	dsn := os.Getenv("DSN")
@@ -25,7 +30,7 @@ func main() {
 	http.Handle("/blunders", http.HandlerFunc(api.Blunders))
 	http.Handle("/whammies", http.HandlerFunc(api.Whammies))
 	http.Handle("/hexes", http.HandlerFunc(api.Hexes))
-	http.Handle("/api/cron", http.HandlerFunc(api.Cron))
+	http.Handle("/api/cron", http.HandlerFunc(cronWithAuthorization))
 
 	port := 8080
 	fmt.Printf("Server is running on http://localhost:%v\n", port)
