@@ -16,7 +16,7 @@ func Hexes(w http.ResponseWriter, r *http.Request) {
 	defer dataProvider.Close()
 
 	// Get most recent story
-	result, err := dataProvider.GetMostRecentStory(jokegen.Hex)
+	result, err := dataProvider.GetMostRecentStory(jokegen.Curse)
 	if err != nil {
 		panic(err)
 	}
