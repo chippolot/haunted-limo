@@ -15,6 +15,10 @@
     {
       "src": "/hexes",
       "dest": "api/hexes.go"
+    },
+    {
+      "src": "/miscreants",
+      "dest": "api/miscreants.go"
     }
   ],
   "functions": {

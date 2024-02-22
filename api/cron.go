@@ -33,7 +33,7 @@ func Cron(w http.ResponseWriter, r *http.Request) {
 
 	// Generate stories
 	options := jokegen.StoryOptions{ForceRegenerate: true}
-	storyTypes := []jokegen.StoryType{jokegen.Misunderstanding, jokegen.Slapstick, jokegen.Curse}
+	storyTypes := []jokegen.StoryType{jokegen.Misunderstanding, jokegen.Slapstick, jokegen.Curse, jokegen.Creature}
 	for _, storyType := range storyTypes {
 		_, err := jokegen.GenerateStory(openAIToken, storyType, dataProvider, options)
 		if err != nil {
