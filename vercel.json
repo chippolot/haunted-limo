@@ -19,17 +19,15 @@
     {
       "src": "/miscreants",
       "dest": "api/miscreants.go"
+    },
+    {
+      "src": "/api/cron",
+      "dest": "api/cron.go"
     }
   ],
   "functions": {
     "api/*.go": {
       "includeFiles": "data/templates/*.gohtml"
     }
-  },
-  "crons": [
-    {
-      "path": "/api/cron.go",
-      "schedule": "0 0 * * *"
-    }
-  ]
+  }
 }

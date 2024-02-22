@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"strings"
@@ -24,21 +25,32 @@ func Cron(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Check for required story type param
+	storyTypeParams, ok := r.URL.Query()["storyType"]
+	if !ok || len(storyTypeParams) != 1 || len(storyTypeParams[0]) < 1 {
+		http.Error(w, "Expected single required query parameter: storyType", http.StatusBadRequest)
+		return
+	}
+	storyTypeParam := storyTypeParams[0]
+
+	// Validate story type
+	storyType, err := jokegen.ParseStoryType(storyTypeParam)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Unknown story type: %s", storyTypeParam), http.StatusBadRequest)
+		return
+	}
+
 	// Prep data provider
 	connectionString := common.GetMySQLConnectionString()
 	dataProvider := common.MakeSQLDataProvider(connectionString)
 	defer dataProvider.Close()
 
-	openAIToken := common.GetOpenAIToken()
-
 	// Generate stories
+	openAIToken := common.GetOpenAIToken()
 	options := jokegen.StoryOptions{ForceRegenerate: true}
-	storyTypes := []jokegen.StoryType{jokegen.Misunderstanding, jokegen.Slapstick, jokegen.Curse, jokegen.Creature}
-	for _, storyType := range storyTypes {
-		_, err := jokegen.GenerateStory(openAIToken, storyType, dataProvider, options)
-		if err != nil {
-			panic(err)
-		}
+	_, err = jokegen.GenerateStory(openAIToken, storyType, dataProvider, options)
+	if err != nil {
+		panic(err)
 	}
 
 	w.WriteHeader(http.StatusOK)
