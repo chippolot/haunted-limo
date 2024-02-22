@@ -2,18 +2,24 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 
 	"github.com/chippolot/haunted-limo/api"
-	common "github.com/chippolot/haunted-limo/api/_pkg"
+	"github.com/chippolot/haunted-limo/api/_pkg/data"
+	"github.com/joho/godotenv"
 )
-
-var dataProvider *common.SQLDataProvider
 
 func cronWithAuthorization(w http.ResponseWriter, r *http.Request) {
 	r.Header.Add("Authorization", fmt.Sprintf("Bearer %s", os.Getenv("CRON_SECRET")))
 	api.Cron(w, r)
+}
+
+func init() {
+	if err := godotenv.Load(".env"); err != nil {
+		log.Fatal("Error loading .env file")
+	}
 }
 
 func main() {
@@ -23,15 +29,22 @@ func main() {
 		panic("DSN not found in environment variables")
 	}
 
-	dataProvider = common.MakeSQLDataProvider(dsn)
-	defer dataProvider.Close()
-
 	http.Handle("/", http.HandlerFunc(api.Index))
-	http.Handle("/blunders", http.HandlerFunc(api.Blunders))
-	http.Handle("/whammies", http.HandlerFunc(api.Whammies))
-	http.Handle("/hexes", http.HandlerFunc(api.Hexes))
-	http.Handle("/miscreants", http.HandlerFunc(api.Miscreants))
 	http.Handle("/api/cron", http.HandlerFunc(cronWithAuthorization))
+
+	storyDataList, err := data.LoadStoryData()
+	if err != nil {
+		panic(err)
+	}
+	for _, storyData := range storyDataList {
+		storyType := storyData.StoryType
+		http.Handle("/"+storyData.Key, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			query := r.URL.Query()
+			query.Add("storyType", storyType)
+			r.URL.RawQuery = query.Encode()
+			api.Story(w, r)
+		}))
+	}
 
 	port := 8080
 	fmt.Printf("Server is running on http://localhost:%v\n", port)

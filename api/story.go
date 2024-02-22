@@ -2,27 +2,20 @@ package api
 
 import (
 	"fmt"
+	"html/template"
 	"net/http"
-	"os"
-	"strings"
 
 	"github.com/chippolot/haunted-limo/api/_pkg/common"
 	"github.com/chippolot/haunted-limo/api/_pkg/data"
+	viewmodels "github.com/chippolot/haunted-limo/api/_pkg/view_models"
 	"github.com/chippolot/jokegen"
 )
 
-func Cron(w http.ResponseWriter, r *http.Request) {
-	// Get the bearer token from the Authorization header
-	authHeader := r.Header.Get("Authorization")
-	splitToken := strings.Split(authHeader, "Bearer ")
-	var authToken string
-	if len(splitToken) > 1 {
-		authToken = splitToken[1]
-	}
-
-	// Check if the token is not found or does not match the CRON_SECRET
-	if authToken == "" || authToken != os.Getenv("CRON_SECRET") {
-		http.Error(w, `{"error": "Unauthorized"}`, http.StatusUnauthorized)
+func Story(w http.ResponseWriter, r *http.Request) {
+	// Load story data
+	storyDataList, err := data.LoadStoryData()
+	if err != nil {
+		http.Error(w, "Failed to load story data", http.StatusBadRequest)
 		return
 	}
 
@@ -33,6 +26,13 @@ func Cron(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	storyTypeParam := storyTypeParams[0]
+
+	// Find story data
+	storyData, err := data.FindStoryData(storyDataList, storyTypeParam)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Failed to load story data: %s", storyTypeParam), http.StatusBadRequest)
+		panic(err)
+	}
 
 	// Validate story type
 	storyType, err := jokegen.ParseStoryType(storyTypeParam)
@@ -46,13 +46,20 @@ func Cron(w http.ResponseWriter, r *http.Request) {
 	dataProvider := data.MakeSQLDataProvider(connectionString)
 	defer dataProvider.Close()
 
-	// Generate stories
-	openAIToken := common.GetOpenAIToken()
-	options := jokegen.StoryOptions{ForceRegenerate: true}
-	_, err = jokegen.GenerateStory(openAIToken, storyType, dataProvider, options)
+	// Get most recent story
+	result, err := dataProvider.GetMostRecentStory(storyType)
 	if err != nil {
 		panic(err)
 	}
 
-	w.WriteHeader(http.StatusOK)
+	model := viewmodels.StoryModel{
+		Cfg:   storyData,
+		Story: result.Story,
+	}
+
+	tmplPath := common.GetDataFilePath("templates/story.gohtml")
+	tmpl := template.Must(template.ParseFiles(tmplPath))
+	if err := tmpl.Execute(w, model); err != nil {
+		panic(err)
+	}
 }

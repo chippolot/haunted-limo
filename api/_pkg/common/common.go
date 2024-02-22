@@ -1,20 +1,9 @@
 package common
 
 import (
-	"html/template"
+	"io"
 	"os"
 )
-
-type StoryModel struct {
-	Title              string
-	Story              string
-	BackgroundColor    string
-	LogoFontLink       template.URL
-	LogoFontFamilyName string
-	LogoFontStyle      string
-	LogoFontWeight     int
-	LogoFontSerif      string
-}
 
 func GetMySQLConnectionString() string {
 	// Resolve DB connection string
@@ -32,4 +21,23 @@ func GetOpenAIToken() string {
 		panic("OpenAI API key not found in environment variables")
 	}
 	return token
+}
+
+func GetDataFilePath(relativePath string) string {
+	baseDataDir := os.Getenv("BASE_DATA_DIR") + "data/"
+	return baseDataDir + relativePath
+}
+
+func LoadFileBytes(path string) ([]byte, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	bytes, err := io.ReadAll(file)
+	if err != nil {
+		return nil, err
+	}
+	return bytes, nil
 }

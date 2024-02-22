@@ -46,10 +46,9 @@
         <h1 class="user-select-none">haunted limo.</h1>
         <br />
         <ul class="list-unstyled">
-            <li><a href="/blunders" class="text-reset">blunders.</a></li>
-            <li><a href="/whammies" class="text-reset">whammies.</a></li>
-            <li><a href="/hexes" class="text-reset">hexes.</a></li>
-            <li><a href="/miscreants" class="text-reset">miscreants.</a></li>
+            {{range .Stories}}
+                <li><a href="/{{.Key}}" class="text-reset">{{.Title}}</a></li>
+            {{end}}
         </ul>
     </div>
 </body>

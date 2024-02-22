@@ -5,29 +5,33 @@
       "dest": "api/index.go"
     },
     {
+      "src": "/api/cron",
+      "dest": "api/cron.go"
+    },
+    {
       "src": "/blunders",
-      "dest": "api/blunders.go"
+      "dest": "api/story.go?storyType=misunderstanding"
     },
     {
       "src": "/whammies",
-      "dest": "api/whammies.go"
+      "dest": "api/story.go?storyType=slapstick"
     },
     {
       "src": "/hexes",
-      "dest": "api/hexes.go"
+      "dest": "api/story.go?storyType=curse"
     },
     {
       "src": "/miscreants",
-      "dest": "api/miscreants.go"
+      "dest": "api/story.go?storyType=creature"
     },
     {
-      "src": "/api/cron",
-      "dest": "api/cron.go"
+      "src": "/nothings",
+      "dest": "api/story.go?storyType=antihumor"
     }
   ],
   "functions": {
     "api/*.go": {
-      "includeFiles": "data/templates/*.gohtml"
+      "includeFiles": "data/**/*.*"
     }
   }
 }

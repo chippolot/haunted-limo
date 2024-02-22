@@ -1,0 +1,59 @@
+{
+    "Stories": [
+        {
+            "Key": "blunders",
+            "Title": "blunders.",
+            "StoryType": "misunderstanding",
+            "BackgroundColor": "#154137",
+            "LogoFontLink": "Fredoka:wght@600",
+            "LogoFontFamilyName": "Fredoka",
+            "LogoFontStyle": "normal",
+            "LogoFontWeight": 600,
+            "LogoFontSerif": "sans-serif"
+        },
+        {
+            "Key": "whammies",
+            "Title": "whammies.",
+            "StoryType": "slapstick",
+            "BackgroundColor": "#bb3a51",
+            "LogoFontLink": "Courgette",
+            "LogoFontFamilyName": "Courgette",
+            "LogoFontStyle": "normal",
+            "LogoFontWeight": 300,
+            "LogoFontSerif": "sans-serif"
+        },
+        {
+            "Key": "hexes",
+            "Title": "hexes.",
+            "StoryType": "curse",
+            "BackgroundColor": "#372445",
+            "LogoFontLink": "Vesper+Libre:wght@400",
+            "LogoFontFamilyName": "Vesper Libre",
+            "LogoFontStyle": "normal",
+            "LogoFontWeight": 400,
+            "LogoFontSerif": "serif"
+        },
+        {
+            "Key": "miscreants",
+            "Title": "miscreants.",
+            "StoryType": "creature",
+            "BackgroundColor": "#048c7c",
+            "LogoFontLink": "Carter+One",
+            "LogoFontFamilyName": "Carter One",
+            "LogoFontStyle": "normal",
+            "LogoFontWeight": 400,
+            "LogoFontSerif": "system-ui"
+        },
+        {
+            "Key": "nothings",
+            "Title": "nothings.",
+            "StoryType": "antihumor",
+            "BackgroundColor": "#3d362b",
+            "LogoFontLink": "Raleway",
+            "LogoFontFamilyName": "Raleway",
+            "LogoFontStyle": "normal",
+            "LogoFontWeight": 400,
+            "LogoFontSerif": "sans-serif"
+        }
+    ]
+}
