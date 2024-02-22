@@ -2,6 +2,8 @@ module github.com/chippolot/haunted-limo
 
 go 1.22
 
+toolchain go1.22.0
+
 require (
 	github.com/chippolot/jokegen v1.5.0
 	github.com/go-sql-driver/mysql v1.7.1
