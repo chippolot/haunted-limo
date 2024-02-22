@@ -1,5 +1,7 @@
 github.com/chippolot/jokegen v1.5.0 h1:zFQbERjeNOcEH2XtjgzQjcOEvGrnSoMg5v2bBCkSAhQ=
 github.com/chippolot/jokegen v1.5.0/go.mod h1:MTeTABd0WTVIL10tUZ3SDM+cybvxFzwM5KebD7gABr4=
+github.com/chippolot/jokegen v1.5.1 h1:C2Crj75QTQi1+OHQVaRQeFy+fDQRbyL5uVAJFaTaDnA=
+github.com/chippolot/jokegen v1.5.1/go.mod h1:lj8qB04fN8KkXakaTlJ+He4wOUBN4wRFCDiH4GuS6Hk=
 github.com/cpuguy83/go-md2man/v2 v2.0.2 h1:p1EgwI/C7NhT0JmVkwCD2ZBK8j4aeHQX2pMHHBfMQ6w=
 github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
 github.com/go-sql-driver/mysql v1.7.1 h1:lUIinVbN1DY0xBg0eMOzmmtGoHwWBbvnWubQUrtU8EI=
